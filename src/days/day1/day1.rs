@@ -50,7 +50,11 @@ pub fn part2() -> u32 {
 
             while left < line.len() {
                 for i in 3..6 {
-                    let right = if left + i < line.len() { left + i } else { line.len() };
+                    let right = if left + i < line.len() {
+                        left + i
+                    } else {
+                        line.len()
+                    };
 
                     if digits.keys().any(|s| *s == line[left..right].to_string()) {
                         let digit = digits.get(&line[left..right]).unwrap();
@@ -63,7 +67,7 @@ pub fn part2() -> u32 {
 
                 left += 1;
             }
-            
+
             new_line
         })
         .map(|line| {
