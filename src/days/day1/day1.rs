@@ -31,15 +31,15 @@ pub fn part2() -> u32 {
     let input = get_input();
 
     let digits = HashMap::from([
-        ("three", '3'),
-        ("seven", '7'),
-        ("eight", '8'),
-        ("four", '4'),
-        ("five", '5'),
-        ("nine", '9'),
         ("one", '1'),
         ("two", '2'),
+        ("three", '3'),
+        ("four", '4'),
+        ("five", '5'),
         ("six", '6'),
+        ("seven", '7'),
+        ("eight", '8'),
+        ("nine", '9'),
     ]);
 
     input
