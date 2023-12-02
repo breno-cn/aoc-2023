@@ -47,7 +47,7 @@ fn get_input() -> Vec<Game> {
         .map(|game| game.split("; ").collect::<Vec<&str>>())
         .map(|game| process_game(&game))
         .collect();
-    
+
     games
 }
 
@@ -68,5 +68,23 @@ pub fn part1() -> i32 {
         .enumerate()
         .filter(|(_, game)| is_game_possible(red_target, green_target, blue_target, game))
         .map(|(index, _)| (index + 1) as i32)
+        .sum()
+}
+
+fn fewest_possible(game: &Game) -> (i32, i32, i32) {
+    let red = game.reds.iter().max().unwrap();
+    let green = game.greens.iter().max().unwrap();
+    let blue = game.blues.iter().max().unwrap();
+
+    (*red, *green, *blue)
+}
+
+pub fn part2() -> i32 {
+    let games = get_input();
+
+    games
+        .iter()
+        .map(fewest_possible)
+        .map(|(red, green, blue)| red * green * blue)
         .sum()
 }
