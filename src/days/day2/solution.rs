@@ -76,7 +76,6 @@ pub fn part1() -> i32 {
     games
         .iter()
         .enumerate()
-        // .filter(|(_, game)| is_game_possible(red_target, green_target, blue_target, game))
         .filter(|(_, game)| game.is_possible(red_target, green_target, blue_target))
         .map(|(index, _)| (index + 1) as i32)
         .sum()
