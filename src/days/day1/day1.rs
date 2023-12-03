@@ -7,29 +7,39 @@ fn get_input() -> Vec<String> {
     data.split("\n").map(str::to_string).collect()
 }
 
-pub fn part1() -> u32 {
-    let input = get_input();
+fn get_digits_part1(line: &String) -> u32 {
+    // find leftmost digit
+    let mut left = 0;
+    let mut leftmost_digit = 0;
 
-    input
-        .iter()
-        .map(|line| {
-            line.chars()
-                .filter(|c| c.is_digit(10))
-                .collect::<Vec<char>>()
-        })
-        .map(|line| {
-            (
-                line.first().unwrap().to_digit(10).unwrap(),
-                line.last().unwrap().to_digit(10).unwrap(),
-            )
-        })
-        .map(|(digit1, digit2)| digit1 * 10 + digit2)
-        .sum()
+    while left < line.len() {
+        let current_char = line.chars().nth(left).unwrap();
+        if current_char.is_digit(10) {
+            leftmost_digit = current_char.to_digit(10).unwrap();
+            break;
+        }
+
+        left += 1;
+    }
+
+    // find rightmost digit
+    let mut right: i32 = (line.len() - 1) as i32;
+    let mut rightmost_digit = 0;
+
+    while right >= 0 {
+        let current_char = line.chars().nth(right as usize).unwrap();
+        if current_char.is_digit(10) {
+            rightmost_digit = current_char.to_digit(10).unwrap();
+            break;
+        }
+
+        right -= 1;
+    }
+
+    leftmost_digit * 10 + rightmost_digit
 }
 
-pub fn part2() -> u32 {
-    let input = get_input();
-
+fn get_digits_part2(line: &String) -> u32 {
     let digits = HashMap::from([
         ("one", '1'),
         ("two", '2'),
@@ -42,46 +52,80 @@ pub fn part2() -> u32 {
         ("nine", '9'),
     ]);
 
-    input
-        .iter()
-        .map(|line| {
-            let mut left = 0;
-            let mut new_line: Vec<char> = Vec::new();
+    // find leftmost digit
+    let mut left = 0;
+    let mut leftmost_digit = 0;
 
-            while left < line.len() {
-                for i in 3..6 {
-                    let right = if left + i < line.len() {
-                        left + i
-                    } else {
-                        line.len()
-                    };
+    'leftmost: while left < line.len() {
+        let current_char = line.chars().nth(left).unwrap();
+        if current_char.is_digit(10) {
+            leftmost_digit = current_char.to_digit(10).unwrap();
+            break 'leftmost;
+        }
 
-                    if digits.keys().any(|s| *s == line[left..right].to_string()) {
-                        let digit = digits.get(&line[left..right]).unwrap();
-                        new_line.push(*digit);
-                    } else {
-                        let current_char = line.chars().nth(left).unwrap();
-                        new_line.push(current_char);
-                    }
-                }
+        for i in 3..6 {
+            let right = if left + i < line.len() {
+                left + i
+            } else {
+                line.len()
+            };
 
-                left += 1;
+            if digits.keys().any(|s| *s == line[left..right].to_string()) {
+                leftmost_digit = digits
+                    .get(&line[left..right])
+                    .unwrap()
+                    .to_digit(10)
+                    .unwrap();
+                break 'leftmost;
             }
+        }
 
-            new_line
-        })
-        .map(|line| {
-            line.iter()
-                .filter(|c| c.is_digit(10))
-                .map(char::clone)
-                .collect::<Vec<char>>()
-        })
-        .map(|line| {
-            (
-                line.first().unwrap().to_digit(10).unwrap(),
-                line.last().unwrap().to_digit(10).unwrap(),
-            )
-        })
-        .map(|(digit1, digit2)| digit1 * 10 + digit2)
-        .sum()
+        left += 1;
+    }
+
+    // find rightmost digit
+    let mut right: i32 = (line.len() - 1) as i32;
+    let mut rightmost_digit = 0;
+
+    'rightmost: while right >= 0 {
+        let current_char = line.chars().nth(right as usize).unwrap();
+        if current_char.is_digit(10) {
+            rightmost_digit = current_char.to_digit(10).unwrap();
+            break 'rightmost;
+        }
+
+        for i in 2..5 {
+            let left = if (right as i32 - i) < 0 {
+                0
+            } else {
+                right - i
+            };
+
+            let current_string = line[left as usize..right as usize + 1].to_string();
+            if digits.keys().any(|s| *s == current_string) {
+                rightmost_digit = digits
+                    .get(current_string.as_str())
+                    .unwrap()
+                    .to_digit(10)
+                    .unwrap();
+                break 'rightmost;
+            }
+        }
+
+        right -= 1;
+    }
+
+    leftmost_digit * 10 + rightmost_digit
+}
+
+pub fn part1() -> u32 {
+    let input = get_input();
+
+    input.iter().map(get_digits_part1).sum()
+}
+
+pub fn part2() -> u32 {
+    let input = get_input();
+
+    input.iter().map(get_digits_part2).sum()
 }
