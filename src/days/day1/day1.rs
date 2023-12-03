@@ -40,16 +40,16 @@ fn get_digits_part1(line: &String) -> u32 {
 }
 
 fn get_digits_part2(line: &String) -> u32 {
-    let digits = HashMap::from([
-        ("one", '1'),
-        ("two", '2'),
-        ("three", '3'),
-        ("four", '4'),
-        ("five", '5'),
-        ("six", '6'),
-        ("seven", '7'),
-        ("eight", '8'),
-        ("nine", '9'),
+    let digits: HashMap<&str, u32> = HashMap::from([
+        ("one", 1),
+        ("two", 2),
+        ("three", 3),
+        ("four", 4),
+        ("five", 5),
+        ("six", 6),
+        ("seven", 7),
+        ("eight", 8),
+        ("nine", 9),
     ]);
 
     // find leftmost digit
@@ -71,10 +71,8 @@ fn get_digits_part2(line: &String) -> u32 {
             };
 
             if digits.keys().any(|s| *s == line[left..right].to_string()) {
-                leftmost_digit = digits
+                leftmost_digit = *digits
                     .get(&line[left..right])
-                    .unwrap()
-                    .to_digit(10)
                     .unwrap();
                 break 'leftmost;
             }
@@ -103,10 +101,8 @@ fn get_digits_part2(line: &String) -> u32 {
 
             let current_string = line[left as usize..right as usize + 1].to_string();
             if digits.keys().any(|s| *s == current_string) {
-                rightmost_digit = digits
+                rightmost_digit = *digits
                     .get(current_string.as_str())
-                    .unwrap()
-                    .to_digit(10)
                     .unwrap();
                 break 'rightmost;
             }
