@@ -71,9 +71,7 @@ fn get_digits_part2(line: &String) -> u32 {
             };
 
             if digits.keys().any(|s| *s == line[left..right].to_string()) {
-                leftmost_digit = *digits
-                    .get(&line[left..right])
-                    .unwrap();
+                leftmost_digit = *digits.get(&line[left..right]).unwrap();
                 break 'leftmost;
             }
         }
@@ -93,17 +91,11 @@ fn get_digits_part2(line: &String) -> u32 {
         }
 
         for i in 2..5 {
-            let left = if (right as i32 - i) < 0 {
-                0
-            } else {
-                right - i
-            };
+            let left = if (right as i32 - i) < 0 { 0 } else { right - i };
 
             let current_string = line[left as usize..right as usize + 1].to_string();
             if digits.keys().any(|s| *s == current_string) {
-                rightmost_digit = *digits
-                    .get(current_string.as_str())
-                    .unwrap();
+                rightmost_digit = *digits.get(current_string.as_str()).unwrap();
                 break 'rightmost;
             }
         }
