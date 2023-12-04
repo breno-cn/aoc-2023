@@ -89,11 +89,6 @@ impl Board {
             return None;
         }
 
-        // let mut result = 0;
-        // for (row, col) in leftmost_positions {
-        //     let number = self.get_number(row, col);
-        //     result += number;
-        // }
         let result = leftmost_positions
             .iter()
             .map(|(row, col)| self.get_number(*row, *col))
