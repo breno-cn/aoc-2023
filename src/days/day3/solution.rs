@@ -92,9 +92,9 @@ impl Board {
         let result = leftmost_positions
             .iter()
             .map(|(row, col)| self.get_number(*row, *col))
-            .collect::<Vec<u32>>();
+            .product();
 
-        Some(result[0] * result[1])
+        Some(result)
     }
 }
 
