@@ -15,4 +15,5 @@ fn main() {
     */
 
     println!("day 3 part 1: {:}", day3::solution::part1());
+    println!("day 3 part 2: {:}", day3::solution::part2());
 }
